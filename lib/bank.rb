@@ -3,18 +3,19 @@ require 'pry'
 
 class Bank
 
-  attr_reader :bank_name,
-              :accounts
+  attr_reader :bank_name
 
   def initialize(bank_name)
     # puts "#{bank_name} has been created."
     @bank_name = bank_name
     @accounts = {}
+    @account_holders = []
   end
 
   def open_account(person)
     # puts "An account has been opened for #{person.person_name} with #{bank_name}."
     person.bank_accounts[bank_name] = 0
+    @account_holders << person
   end
 
   def deposit(person, amount)
@@ -46,8 +47,19 @@ class Bank
       # puts "#{person.person_name} does not have an account with #{bank.bank_name}."
     end
   end
+
+  def total_cash
+    total = 0
+    @account_holders.each do |person|
+      total += person.bank_accounts[bank_name]
+    end
+    total
+  end
 end
 
 chase = Bank.new("JP Morgan Chase")
 person_1 = Person.new("Minerva", 500)
 chase.open_account(person_1)
+
+
+# create a check for account method

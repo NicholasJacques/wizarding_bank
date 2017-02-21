@@ -86,4 +86,16 @@ class BankTest < Minitest::Test
     assert_equal ({"JP Morgan Chase"=>200}), person_1.bank_accounts
   end
 
+  def test_total_cash_in_bank
+    chase = Bank.new("JP Morgan Chase")
+    person_1 = Person.new("Minerva", 1000)
+    person_2 = Person.new("Harry", 3000)
+    chase.open_account(person_1)
+    chase.open_account(person_2)
+    chase.deposit(person_1, 500)
+    chase.deposit(person_2, 1000)
+    chase.deposit(person_1, 100)
+    assert_equal 1600, chase.total_cash
+  end
+
 end
