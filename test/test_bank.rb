@@ -5,7 +5,52 @@ require 'minitest/pride'
 class BankTest < Minitest::Test
 
   def test_class_exist
-    assert Bank.new
+    assert Bank.new("JP Morgan Chase")
   end
 
+  def test_bank_has_a_name
+    chase = Bank.new("JP Morgan Chase")
+    assert_equal "JP Morgan Chase", chase.bank_name
+  end
+
+  def test_can_open_account_for_person
+    chase = Bank.new("JP Morgan Chase")
+    person_1 = Person.new("Minerva", 1000)
+    chase.open_account(person_1)
+    assert_equal ({"JP Morgan Chase"=>0}), person_1.bank_accounts
+  end
+
+  def test_bank_can_take_deposits
+    chase = Bank.new("JP Morgan Chase")
+    person_1 = Person.new("Minerva", 1000)
+    chase.open_account(person_1)
+    chase.deposit(person_1, 200)
+    assert_equal ({"JP Morgan Chase"=>200}), person_1.bank_accounts
+  end
+
+  def test_cannot_deposit_more_than_cash
+    chase = Bank.new("JP Morgan Chase")
+    person_1 = Person.new("Minerva", 500)
+    chase.open_account(person_1)
+    chase.deposit(person_1, 700)
+    assert_equal ({"JP Morgan Chase"=>0}), person_1.bank_accounts
+  end
+
+  def test_can_make_withdrawals
+    chase = Bank.new("JP Morgan Chase")
+    person_1 = Person.new("Minerva", 1000)
+    chase.open_account(person_1)
+    chase.deposit(person_1, 200)
+    chase.withdrawal(person_1, 100)
+    assert_equal ({"JP Morgan Chase"=>100}), person_1.bank_accounts
+  end
+
+  def test_cannot_overdraft
+    chase = Bank.new("JP Morgan Chase")
+    person_1 = Person.new("Minerva", 1000)
+    chase.open_account(person_1)
+    chase.deposit(person_1, 200)
+    chase.withdrawal(person_1, 300)
+    assert_equal ({"JP Morgan Chase"=>200}), person_1.bank_accounts
+  end
 end
