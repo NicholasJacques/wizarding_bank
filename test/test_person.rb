@@ -10,7 +10,7 @@ class PersonTest < Minitest::Test
 
   def test_class_takes_name_argument
     person_1 = Person.new("Minerva", 1000)
-    assert_equal "Minerva", person_1.name
+    assert_equal "Minerva", person_1.person_name
   end
 
   def test_class_takes_cash_argument
