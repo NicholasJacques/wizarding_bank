@@ -34,6 +34,16 @@ class Bank
       # puts "Insufficient Funds."
     end
   end
+
+  def transfer(person, bank, amount)
+    if person.bank_accounts[bank_name] >= amount
+      person.bank_accounts[bank_name] -= amount
+      person.bank_accounts[bank.bank_name] += amount.to_i
+      # puts "#{person.person_name} has transferred #{amount} galleons from #{bank_name} to #{bank.bank_name}."
+    else
+      #puts "Insufficient Funds"
+    end
+  end
 end
 
 chase = Bank.new("JP Morgan Chase")

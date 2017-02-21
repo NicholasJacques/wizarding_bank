@@ -53,4 +53,27 @@ class BankTest < Minitest::Test
     chase.withdrawal(person_1, 300)
     assert_equal ({"JP Morgan Chase"=>200}), person_1.bank_accounts
   end
+
+  def test_transfer_to_another_bank
+    chase = Bank.new("JP Morgan Chase")
+    wells_fargo = Bank.new("Wells Fargo")
+    person_1 = Person.new("Minerva", 1000)
+    chase.open_account(person_1)
+    wells_fargo.open_account(person_1)
+    chase.deposit(person_1, 1000)
+    chase.transfer(person_1, wells_fargo, 200)
+    assert_equal ({"JP Morgan Chase"=>800, "Wells Fargo"=>200}), person_1.bank_accounts
+  end
+
+  def test_no_transfer_if_insufficient_funds
+    chase = Bank.new("JP Morgan Chase")
+    wells_fargo = Bank.new("Wells Fargo")
+    person_1 = Person.new("Minerva", 1000)
+    chase.open_account(person_1)
+    wells_fargo.open_account(person_1)
+    chase.deposit(person_1, 200)
+    chase.transfer(person_1, wells_fargo, 1000)
+    assert_equal ({"JP Morgan Chase"=>200, "Wells Fargo"=>0}), person_1.bank_accounts
+  end
+
 end
