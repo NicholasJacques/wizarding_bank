@@ -76,4 +76,14 @@ class BankTest < Minitest::Test
     assert_equal ({"JP Morgan Chase"=>200, "Wells Fargo"=>0}), person_1.bank_accounts
   end
 
+  def test_no_transfer_if_account_doesnt_exist
+    chase = Bank.new("JP Morgan Chase")
+    wells_fargo = Bank.new("Wells Fargo")
+    person_1 = Person.new("Minerva", 1000)
+    chase.open_account(person_1)
+    chase.deposit(person_1, 200)
+    chase.transfer(person_1, wells_fargo, 100)
+    assert_equal ({"JP Morgan Chase"=>200}), person_1.bank_accounts
+  end
+
 end
